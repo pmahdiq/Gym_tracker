@@ -75,8 +75,12 @@ WSGI_APPLICATION = 'gym_tracker.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    'ENGINE': 'django.db.backends.postgresql',
+    'NAME': 'gym_tracker',
+    'USER': 'admin',
+    'PASSWORD': 'm@hdi1384',
+    'HOST': 'localhost',
+    'PORT': '5432', # default PostgreSQL port
     }
 }
 
