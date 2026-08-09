@@ -1,0 +1,56 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Gym Tracker{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'tracker/css/style.css' %}">
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="header-container">
+
+            <a href="{% url 'dashboard' %}" class="logo">
+                Gym<span>Tracker</span>
+            </a>
+
+            <nav class="main-nav">
+                <a href="{% url 'dashboard' %}">Dashboard</a>
+                <a href="{% url 'add_session' %}" class="nav-add">
+                    + Add Session
+                </a>
+            </nav>
+
+            <a href="{% url 'edit_profile' %}" class="user-menu">
+                <div class="user-avatar">
+                    {{ user.username|first|upper }}
+                </div>
+
+                <span>{{ user.username }}</span>
+            </a>
+
+        </div>
+    </header>
+
+
+    <main class="main-content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+
+    <footer class="site-footer">
+        <p>© 2026 Gym Tracker</p>
+    </footer>
+
+
+    <script src="{% static 'tracker/js/main.js' %}"></script>
+
+</body>
+</html>

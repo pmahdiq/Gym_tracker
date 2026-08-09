@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}Add Session | Gym Tracker{% endblock %}
+
+{% block content %}
+
+<div class="page-container narrow-container">
+
+    <div class="page-header">
+
+        <div>
+            <p class="eyebrow">TRAINING</p>
+            <h1>Add Session</h1>
+
+            <p class="page-description">
+                Record the exercises you completed today.
+            </p>
+        </div>
+
+    </div>
+
+
+    <form method="post" class="session-form">
+
+        {% csrf_token %}
+
+        <div class="form-section">
+
+            <h2>Session Information</h2>
+
+            <div class="form-group">
+
+                <label for="session_date">
+                    Date
+                </label>
+
+                <input
+                    type="date"
+                    id="session_date"
+                    name="session_date"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="form-section">
+
+            <div class="form-section-header">
+
+                <div>
+                    <h2>Exercises</h2>
+
+                    <p>
+                        Add the exercises, reps and weight from this session.
+                    </p>
+                </div>
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    id="add-exercise"
+                >
+                    + Add Exercise
+                </button>
+
+            </div>
+
+
+            <div id="exercise-list">
+
+                <div class="exercise-row">
+
+                    <div class="form-group">
+
+                        <label>Exercise</label>
+
+                        <input
+                            type="text"
+                            name="exercise[]"
+                            placeholder="Bench Press"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>Reps</label>
+
+                        <input
+                            type="number"
+                            name="reps[]"
+                            placeholder="10"
+                            min="1"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>Weight (kg)</label>
+
+                        <input
+                            type="number"
+                            name="weight[]"
+                            placeholder="60"
+                            min="0"
+                            step="0.5"
+                            required
+                        >
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="remove-exercise"
+                        onclick="removeExercise(this)"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <a
+                href="{% url 'dashboard' %}"
+                class="secondary-button"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="primary-button"
+            >
+                Save Session
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
