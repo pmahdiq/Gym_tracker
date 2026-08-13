@@ -27,12 +27,12 @@
 
         <div class="stat-card">
             <span class="stat-label">Total Sessions</span>
-            <strong class="stat-value">24</strong>
+            <strong class="stat-value">{{sessions_count}}</strong>
         </div>
 
         <div class="stat-card">
             <span class="stat-label">This Month</span>
-            <strong class="stat-value">8</strong>
+            <strong class="stat-value">{{sessions_count}}</strong>
         </div>
 
         <div class="stat-card">
@@ -47,15 +47,14 @@
 
         <div class="section-header">
             <div>
-                <h2>Recent Sessions</h2>
-                <p>Your latest training sessions.</p>
+                <h2>Training Programs</h2>
             </div>
         </div>
 
 
         <div class="sessions-list">
 
-            <!-- Example session -->
+            {% for program in training_programs %}
 
             <article class="session-card">
 
@@ -66,24 +65,10 @@
                     </div>
 
                     <div>
-                        <h3>Push Day</h3>
-
-                        <p class="session-date">
-                            August 8, 2026
-                        </p>
+                        <h3>{{program.title}}</h3>
                     </div>
 
                 </div>
-
-
-                <div class="exercise-summary">
-
-                    <span>Bench Press</span>
-                    <span>Squat</span>
-                    <span>Shoulder Press</span>
-
-                </div>
-
 
                 <form method="post" class="delete-form">
 
@@ -101,51 +86,7 @@
 
             </article>
 
-
-            <article class="session-card">
-
-                <div class="session-info">
-
-                    <div class="session-icon">
-                        🏋️
-                    </div>
-
-                    <div>
-                        <h3>Pull Day</h3>
-
-                        <p class="session-date">
-                            August 6, 2026
-                        </p>
-                    </div>
-
-                </div>
-
-
-                <div class="exercise-summary">
-
-                    <span>Pull Ups</span>
-                    <span>Deadlift</span>
-                    <span>Barbell Row</span>
-
-                </div>
-
-
-                <form method="post" class="delete-form">
-
-                    {% csrf_token %}
-
-                    <button
-                        type="button"
-                        class="delete-button"
-                        onclick="confirmDelete(this)"
-                    >
-                        Delete
-                    </button>
-
-                </form>
-
-            </article>
-
+            {% endfor %}
 
         </div>
 
