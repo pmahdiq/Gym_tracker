@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load humanize %}
+
 {% block title %}Dashboard | Gym Tracker{% endblock %}
 
 {% block content %}
@@ -32,12 +34,12 @@
 
         <div class="stat-card">
             <span class="stat-label">This Month</span>
-            <strong class="stat-value">{{sessions_count}}</strong>
+            <strong class="stat-value">{{this_month_session_count}}</strong>
         </div>
 
         <div class="stat-card">
             <span class="stat-label">Last Session</span>
-            <strong class="stat-value small">Today</strong>
+            <strong class="stat-value small">{{last_session_day|naturalday }}</strong>
         </div>
 
     </section>

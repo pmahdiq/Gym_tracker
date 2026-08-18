@@ -1,0 +1,365 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gym Tracker | Train Smarter</title>
+
+    <link rel="stylesheet" href="{% static 'tracker/css/style.css' %}">
+</head>
+
+<body class="home-page">
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <header class="home-header">
+        <div class="home-header-container">
+
+            <a href="{
+            
+            
+            }" class="logo">
+                Gym<span>Tracker</span>
+            </a>
+
+            <nav class="home-nav">
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </nav>
+
+            <a href="{% url 'login' %}" class="home-login-button">
+                Login
+            </a>
+
+        </div>
+    </header>
+
+
+    <main>
+
+        <!-- =========================
+             HERO
+        ========================== -->
+
+        <section class="hero-section">
+
+            <div class="hero-content">
+
+                <p class="eyebrow">YOUR PERSONAL GYM TRACKER</p>
+
+                <h1>
+                    Train smarter.
+                    <span>Track better.</span>
+                </h1>
+
+                <p class="hero-description">
+                    Keep your training programs organized, record every
+                    workout session, and keep track of your progress.
+                </p>
+
+                <div class="hero-actions">
+
+                    <a href="{% url 'login' %}" class="primary-button">
+                        Get Started
+                    </a>
+
+                    <a href="#features" class="secondary-button">
+                        Learn More
+                    </a>
+
+                </div>
+
+            </div>
+
+            <div class="hero-visual">
+
+                <div class="hero-card">
+
+                    <div class="hero-card-header">
+                        <div>
+                            <span class="hero-card-label">TODAY'S WORKOUT</span>
+                            <h3>Push Day</h3>
+                        </div>
+
+                        <div class="hero-card-icon">
+                            💪
+                        </div>
+                    </div>
+
+                    <div class="hero-exercise">
+                        <div>
+                            <strong>Bench Press</strong>
+                            <span>3 sets × 10 reps</span>
+                        </div>
+
+                        <span class="exercise-weight">60 kg</span>
+                    </div>
+
+                    <div class="hero-exercise">
+                        <div>
+                            <strong>Shoulder Press</strong>
+                            <span>3 sets × 8 reps</span>
+                        </div>
+
+                        <span class="exercise-weight">20 kg</span>
+                    </div>
+
+                    <div class="hero-exercise">
+                        <div>
+                            <strong>Triceps Pushdown</strong>
+                            <span>3 sets × 12 reps</span>
+                        </div>
+
+                        <span class="exercise-weight">25 kg</span>
+                    </div>
+
+                    <div class="hero-progress">
+                        <div class="hero-progress-header">
+                            <span>Workout Progress</span>
+                            <span>75%</span>
+                        </div>
+
+                        <div class="progress-bar">
+                            <div class="progress-value"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             FEATURES
+        ========================== -->
+
+        <section class="home-section" id="features">
+
+            <div class="home-section-header">
+
+                <p class="eyebrow">FEATURES</p>
+
+                <h2>Everything you need to track your training.</h2>
+
+                <p>
+                    Gym Tracker keeps your workouts organized so you can
+                    focus on training instead of remembering what you did.
+                </p>
+
+            </div>
+
+
+            <div class="feature-grid">
+
+                <article class="feature-card">
+
+                    <div class="feature-icon">📋</div>
+
+                    <h3>Training Programs</h3>
+
+                    <p>
+                        Create and organize your own training programs
+                        with the exercises you want to perform.
+                    </p>
+
+                </article>
+
+
+                <article class="feature-card">
+
+                    <div class="feature-icon">🏋️</div>
+
+                    <h3>Track Sessions</h3>
+
+                    <p>
+                        Start a session from your training program and
+                        record the work you actually complete.
+                    </p>
+
+                </article>
+
+
+                <article class="feature-card">
+
+                    <div class="feature-icon">📈</div>
+
+                    <h3>Track Your Progress</h3>
+
+                    <p>
+                        Keep your previous sessions organized so you can
+                        look back at your training history.
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             HOW IT WORKS
+        ========================== -->
+
+        <section class="home-section how-section" id="how-it-works">
+
+            <div class="home-section-header">
+
+                <p class="eyebrow">HOW IT WORKS</p>
+
+                <h2>Three simple steps.</h2>
+
+            </div>
+
+
+            <div class="steps-grid">
+
+                <article class="step-card">
+
+                    <span class="step-number">01</span>
+
+                    <h3>Create a program</h3>
+
+                    <p>
+                        Build your training program and add the exercises
+                        you want to perform.
+                    </p>
+
+                </article>
+
+
+                <article class="step-card">
+
+                    <span class="step-number">02</span>
+
+                    <h3>Start your session</h3>
+
+                    <p>
+                        Start a workout whenever you're ready to train.
+                    </p>
+
+                </article>
+
+
+                <article class="step-card">
+
+                    <span class="step-number">03</span>
+
+                    <h3>Record your workout</h3>
+
+                    <p>
+                        Enter your sets, reps and weights and save the
+                        session for later.
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             ABOUT
+        ========================== -->
+
+        <section class="home-section about-section" id="about">
+
+            <div class="about-content">
+
+                <div>
+
+                    <p class="eyebrow">ABOUT GYM TRACKER</p>
+
+                    <h2>Built to make training easier to manage.</h2>
+
+                </div>
+
+                <div class="about-text">
+
+                    <p>
+                        Gym Tracker is a simple workout management
+                        application designed to help you organize your
+                        training and keep a history of your sessions.
+                    </p>
+
+                    <p>
+                        Instead of relying on memory or scattered notes,
+                        you can keep your training programs and workout
+                        sessions in one place.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             CONTACT
+        ========================== -->
+
+        <section class="home-section contact-section" id="contact">
+
+            <div class="contact-card">
+
+                <div>
+
+                    <p class="eyebrow">CONTACT</p>
+
+                    <h2>Have a question?</h2>
+
+                    <p>
+                        We'd love to hear from you. Get in touch if you
+                        have a question, suggestion, or feedback.
+                    </p>
+
+                </div>
+
+                <a
+                    href="mailto:contact@gymtracker.com"
+                    class="primary-button"
+                >
+                    Contact Us
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer class="home-footer">
+
+        <div class="home-footer-container">
+
+            <a href="{% url 'home' %}" class="logo">
+                Gym<span>Tracker</span>
+            </a>
+
+            <p>
+                © 2026 Gym Tracker. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+</body>
+</html>

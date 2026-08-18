@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class TrackerConfig(AppConfig):
+class UserAthenticationConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'tracker'
+    name = 'user_athentication'
