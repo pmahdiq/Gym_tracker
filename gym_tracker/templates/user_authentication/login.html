@@ -58,11 +58,31 @@
                     Login
                 </button>
 
+                <!-- === NEW: Create an account link === -->
+                <div class="register-link-wrapper">
+                    <p class="register-text">
+                        Don't have an account? 
+                        <a href="{% url 'register' %}" class="register-link">Create an account</a>
+                    </p>
+                </div>
+                <!-- ==================================== -->
+
             </form>
 
         </div>
 
     </div>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+        {{ message }}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
 
 </body>
 </html>
