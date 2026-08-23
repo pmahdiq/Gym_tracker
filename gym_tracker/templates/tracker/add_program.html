@@ -10,10 +10,10 @@
 
         <div>
             <p class="eyebrow">TRAINING</p>
-            <h1>Add Session</h1>
+            <h1>Add Training Program</h1>
 
             <p class="page-description">
-                Record the exercises you completed today.
+                Build programs for your future training sessions
             </p>
         </div>
 
@@ -23,24 +23,34 @@
     <form method="post" class="session-form">
 
         {% csrf_token %}
-
+        {{ exercise_form_set.management_form }}
+        
         <div class="form-section">
 
-            <h2>Session Information</h2>
+            <h2>Program Information</h2>
 
             <div class="form-group">
 
-                <label for="session_date">
-                    Date
+                <label for="program title">
+                    Title
                 </label>
 
                 <input
-                    type="date"
-                    id="session_date"
-                    name="session_date"
+                    type="title"
+                    id="program_title"
+                    name="title"
                     required
                 >
 
+                <label for="program description">
+                   Description
+                </label>
+
+                <input
+                    type="text"
+                    id="program_description"
+                    name="description"
+                >
             </div>
 
         </div>
@@ -54,7 +64,7 @@
                     <h2>Exercises</h2>
 
                     <p>
-                        Add the exercises, reps and weight from this session.
+                        Add the exercises from this program.
                     </p>
                 </div>
 
@@ -79,44 +89,12 @@
 
                         <input
                             type="text"
-                            name="exercise[]"
+                            name="form-0-title"
                             placeholder="Bench Press"
                             required
                         >
 
                     </div>
-
-
-                    <div class="form-group">
-
-                        <label>Reps</label>
-
-                        <input
-                            type="number"
-                            name="reps[]"
-                            placeholder="10"
-                            min="1"
-                            required
-                        >
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label>Weight (kg)</label>
-
-                        <input
-                            type="number"
-                            name="weight[]"
-                            placeholder="60"
-                            min="0"
-                            step="0.5"
-                            required
-                        >
-
-                    </div>
-
 
                     <button
                         type="button"
@@ -146,12 +124,23 @@
                 type="submit"
                 class="primary-button"
             >
-                Save Session
+                Save Program
             </button>
 
         </div>
 
     </form>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+        {{ message }}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
 
 </div>
 
