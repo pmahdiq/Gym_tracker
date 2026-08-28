@@ -464,6 +464,29 @@ input {
     box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.12);
 }
 
+.form-group input,
+.form-group textarea {
+    width: 100%;
+
+    padding: 11px 13px;
+
+    background: #10131a;
+    color: #f5f7fa;
+
+    border: 1px solid #303544;
+    border-radius: 8px;
+
+    outline: none;
+
+    transition: 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #7c5cff;
+    box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.12);
+}
+
 .exercise-row {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr auto;

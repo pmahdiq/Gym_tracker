@@ -3,44 +3,37 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from accounts.forms import Register_Form
+
+
+def register_page(request):
+    if request.method == 'POST':
+        form = Register_Form(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, f'Welcome, {user.username}!')
+            return redirect('dashboard')
+        # invalid → falls through, form now carries errors
+    else:
+        form = Register_Form()
+
+    return render(request, 'accounts/register.html', {'form': form})
 
 
 def login_page(request):
-    if request.user.is_authenticated:
-        return redirect('dashboard')
-
     if request.method == 'POST':
-        form = AuthenticationForm(request=request, data=request.POST)
+        form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-
-            user = authenticate(request=request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                messages.success(request, 'You loged in successfully')
-                return redirect('dashboard')
-            else:
-                messages.error(request, 'User not found')
-        else:
-            messages.error(request, 'Login failed')
-    return render(request, 'accounts/login.html')
-
-def register_page(request):
-    if request.user.is_authenticated:
+            user = form.get_user()
+            login(request, user)
             return redirect('dashboard')
+        else:
+            messages.error(request, 'Invalid username or password.')
+    else:
+        form = AuthenticationForm()
 
-    if request.method == 'POST':
-            user = UserCreationForm(request.POST)
-    
-            if user.is_valid():
-                user.save()
-                messages.success(request, "You sign up successfully.")
-                return redirect('login')
-            else:
-                messages.error(request, 'Sign up failed')
-            
-    return render(request, 'accounts/register.html')
+    return render(request, 'accounts/login.html', {'form': form})
 
 @login_required
 def logout_view(request):

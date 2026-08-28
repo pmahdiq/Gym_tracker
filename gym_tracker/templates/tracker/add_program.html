@@ -1,146 +1,100 @@
 {% extends "base.html" %}
 
-{% block title %}Add Session | Gym Tracker{% endblock %}
+{% block title %}{% if is_update %}Update{% else %}Add{% endif %} Session | Gym Tracker{% endblock %}
 
 {% block content %}
 
 <div class="page-container narrow-container">
 
     <div class="page-header">
-
         <div>
             <p class="eyebrow">TRAINING</p>
-            <h1>Add Training Program</h1>
+            {% if is_update %}
+                <h1>Update Training Program</h1>
+            {% else %}
+                <h1>Add Training Program</h1>
+            {% endif %}
 
             <p class="page-description">
                 Build programs for your future training sessions
             </p>
         </div>
-
     </div>
 
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="message message-{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
     <form method="post" class="session-form">
-
         {% csrf_token %}
-        {{ exercise_form_set.management_form }}
-        
-        <div class="form-section">
 
+        <div class="form-section">
             <h2>Program Information</h2>
 
             <div class="form-group">
-
-                <label for="program title">
-                    Title
-                </label>
-
-                <input
-                    type="title"
-                    id="program_title"
-                    name="title"
-                    required
-                >
-
-                <label for="program description">
-                   Description
-                </label>
-
-                <input
-                    type="text"
-                    id="program_description"
-                    name="description"
-                >
+                <label for="{{ program_form.title.id_for_label }}">Title</label>
+                {{ program_form.title }}
+                {% if program_form.title.errors %}
+                    <span class="field-error">{{ program_form.title.errors.0 }}</span>
+                {% endif %}
             </div>
 
+            <div class="form-group">
+                <label for="{{ program_form.description.id_for_label }}">Description</label>
+                {{ program_form.description }}
+                {% if program_form.description.errors %}
+                    <span class="field-error">{{ program_form.description.errors.0 }}</span>
+                {% endif %}
+            </div>
         </div>
-
 
         <div class="form-section">
-
             <div class="form-section-header">
-
                 <div>
                     <h2>Exercises</h2>
-
-                    <p>
-                        Add the exercises from this program.
-                    </p>
+                    <p>Add the exercises from this program.</p>
                 </div>
 
-                <button
-                    type="button"
-                    class="secondary-button"
-                    id="add-exercise"
-                >
+                <button type="button" class="secondary-button" id="add-exercise">
                     + Add Exercise
                 </button>
-
             </div>
 
+            {{ exercise_form_set.management_form }}
 
             <div id="exercise-list">
+                {% for ex_form in exercise_form_set %}
+                    <div class="exercise-row">
 
-                <div class="exercise-row">
+                        {# hidden id field — needed so updates edit the right row instead of creating a new one #}
+                        {{ ex_form.id }}
 
-                    <div class="form-group">
+                        <div class="form-group">
+                            <label for="{{ ex_form.title.id_for_label }}">Exercise</label>
+                            {{ ex_form.title }}
+                            {% if ex_form.title.errors %}
+                                <span class="field-error">{{ ex_form.title.errors.0 }}</span>
+                            {% endif %}
+                        </div>
 
-                        <label>Exercise</label>
-
-                        <input
-                            type="text"
-                            name="form-0-title"
-                            placeholder="Bench Press"
-                            required
-                        >
-
+                        <button type="button" class="remove-exercise" onclick="removeExercise(this)">
+                            ×
+                        </button>
                     </div>
-
-                    <button
-                        type="button"
-                        class="remove-exercise"
-                        onclick="removeExercise(this)"
-                    >
-                        ×
-                    </button>
-
-                </div>
-
+                {% endfor %}
             </div>
-
         </div>
 
-
         <div class="form-actions">
-
-            <a
-                href="{% url 'dashboard' %}"
-                class="secondary-button"
-            >
-                Cancel
-            </a>
-
-            <button
-                type="submit"
-                class="primary-button"
-            >
-                Save Program
-            </button>
-
+            <a href="{% url 'dashboard' %}" class="secondary-button">Cancel</a>
+            <button type="submit" class="primary-button">Save Program</button>
         </div>
 
     </form>
-
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>
-        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
-        {{ message }}
-    </li>
-    {% endfor %}
-</ul>
-{% endif %}
 
 </div>
 

@@ -48,7 +48,6 @@ def add_program_page(request):
                 exercise_form_set.instance = program
                 exercise_form_set.save()
 
-            messages.success(request, 'Training program created successfully')
             return redirect('dashboard')
         else:
             messages.error(request, 'Training program creation failed')
@@ -60,6 +59,44 @@ def add_program_page(request):
         'program_form': program_form,
         'exercise_form_set': exercise_form_set,
     })
+
+
+@login_required
+def update_program(request, program_id):
+    program = get_object_or_404(Training_Program, id=program_id, user=request.user)
+
+    if request.method == "POST":
+        program_form = Program_Model_Form(request.POST, instance=program)
+        exercise_form_set = Exercise_Form_Set(request.POST, instance=program)
+
+        if program_form.is_valid() and exercise_form_set.is_valid():
+            with transaction.atomic():
+
+                program_form.save()
+                exercise_form_set.save()
+
+            return redirect("dashboard")
+        
+    else:
+
+        program_form = Program_Model_Form(
+            instance=program,
+        )
+
+        exercise_form_set = Exercise_Form_Set(
+            instance=program,
+        )
+
+    return render(
+        request,
+        "tracker/add_program.html",
+        {
+            "program_form": program_form,
+            "exercise_form_set": exercise_form_set,
+            "program": program,
+            "is_update": True,
+        },
+    )
 
 @login_required
 def delete_program(request, program_id):

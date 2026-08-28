@@ -26,71 +26,57 @@
                 <p>Start tracking your fitness journey today.</p>
             </div>
 
-            <form method="post">
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li class="message message-{{ message.tags }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
 
+            <form method="post">
                 {% csrf_token %}
 
                 <div class="form-group">
-                    <label for="username">Username</label>
-                    <input
-                        type="text"
-                        id="username"
-                        name="username"
-                        placeholder="Choose a username"
-                        required
-                    >
+                    <label for="{{ form.username.id_for_label }}">Username</label>
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                        <span class="field-error">{{ form.username.errors.0 }}</span>
+                    {% endif %}
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password1"
-                        placeholder="Create a strong password"
-                        required
-                    >
+                    <label for="{{ form.password1.id_for_label }}">Password</label>
+                    {{ form.password1 }}
+                    {% if form.password1.errors %}
+                        <span class="field-error">{{ form.password1.errors.0 }}</span>
+                    {% endif %}
                 </div>
 
                 <div class="form-group">
-                    <label for="confirm_password">Confirm Password</label>
-                    <input
-                        type="password"
-                        id="confirm_password"
-                        name="password2"
-                        placeholder="Confirm your password"
-                        required
-                    >
+                    <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+                    {{ form.password2 }}
+                    {% if form.password2.errors %}
+                        <span class="field-error">{{ form.password2.errors.0 }}</span>
+                    {% endif %}
                 </div>
 
                 <button type="submit" class="primary-button full-width">
                     Create Account
                 </button>
 
-                <!-- === Login link === -->
                 <div class="register-link-wrapper">
                     <p class="register-text">
-                        Already have an account? 
+                        Already have an account?
                         <a href="{% url 'login' %}" class="register-link">Log in</a>
                     </p>
                 </div>
-                <!-- ==================== -->
 
             </form>
 
         </div>
 
     </div>
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>
-        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
-        {{ message }}
-    </li>
-    {% endfor %}
-</ul>
-{% endif %}
 
 </body>
 </html>
