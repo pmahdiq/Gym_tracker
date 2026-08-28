@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db import transaction
 from django.contrib import messages
 
-from tracker.models import Training_Program, Training_Session
+from tracker.models import Training_Program, Training_Session, Exercise, Training_Session_Exercise
 from tracker.forms import Program_Model_Form, Exercise_Form_Set, Session_Form_Set
 
 
@@ -113,23 +113,53 @@ def delete_program(request, program_id):
 
 @login_required
 def start_session(request, program_id):
-    program = get_object_or_404(Training_Program, id=program_id)
-    queryset = program.exercise_set.all()
-
-    # Reuse an already-started, not-yet-finished session (e.g. user refreshed the page)
-    # instead of creating a new one every time they load this page.
-    session, _ = Training_Session.objects.get_or_create(
+    program = get_object_or_404(Training_Program, id=program_id, user=request.user)
+    
+    # 1. Get or create the current active session
+    session, created = Training_Session.objects.get_or_create(
         training_program=program,
         completed_at__isnull=True,
         defaults={'started_at': timezone.now()},
     )
 
+    # 2. Pre-create Training_Session_Exercise logs for this session if they don't exist yet
+    exercises = Exercise.objects.filter(training_program=program)
+    for exercise in exercises:
+        # Optional: Prefill the next session by fetching the user's last completed values
+        last_log = Training_Session_Exercise.objects.filter(
+            exercise=exercise,
+            training_session__completed_at__isnull=False
+        ).order_by('-training_session__completed_at').first()
+
+        defaults = {
+            'title': exercise.title,
+            'sets': last_log.sets if last_log else 3,       # Fallback to 3 sets
+            'reps': last_log.reps if last_log else 10,      # Fallback to 10 reps
+            'weight': last_log.weight if last_log else 0.0, # Fallback to 0.0 kg
+        }
+
+        # get_or_create ensures we don't make duplicates if they reload the page
+        Training_Session_Exercise.objects.get_or_create(
+            training_session=session,
+            exercise=exercise,
+            defaults=defaults
+        )
+
+    # 3. Use the Training_Session_Exercise queryset for the formset
+    queryset = Training_Session_Exercise.objects.filter(
+        training_session=session,
+        exercise__in=exercises  # Keeps active exercises even if some were removed from the program
+    )
+
     if request.method == 'POST':
         formset = Session_Form_Set(request.POST, queryset=queryset)
         if formset.is_valid():
-            formset.save()
+            formset.save()  # This updates the Training_Session_Exercise records in the database
+
+            # Mark session as finished
             session.completed_at = timezone.now()
             session.save()
+            
             messages.success(request, f'"{program.title}" session saved.')
             return redirect('dashboard')
     else:
@@ -139,6 +169,31 @@ def start_session(request, program_id):
         'program': program,
         'formset': formset,
         'session': session,
+    })
+
+
+@login_required
+def session_history(request):
+    sessions = (
+        Training_Session.objects
+        .filter(training_program__user=request.user, completed_at__isnull=False)
+        .select_related('training_program')
+        .order_by('-completed_at')
+    )
+    return render(request, 'tracker/session_history.html', {'sessions': sessions})
+
+
+def session_detail(request, session_id):
+    session = get_object_or_404(
+        Training_Session.objects.select_related('training_program'),
+        id=session_id,
+        training_program__user=request.user,   # blocks viewing another user's session by URL guessing
+    )
+    exercise_logs = session.exercise_logs.all()
+
+    return render(request, 'tracker/session_detail.html', {
+        'session': session,
+        'exercise_logs': exercise_logs,
     })
 
 

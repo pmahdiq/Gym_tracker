@@ -1,6 +1,6 @@
 # forms.py
 from django import forms
-from tracker.models import Training_Program, Exercise
+from tracker.models import Training_Program, Exercise, Training_Session_Exercise
 
 
 class Program_Model_Form(forms.ModelForm):
@@ -31,7 +31,7 @@ Exercise_Form_Set = forms.inlineformset_factory(
 )
 
 Session_Form_Set = forms.modelformset_factory(
-    Exercise,
+    Training_Session_Exercise,
     fields=['sets', 'reps', 'weight'],
     extra=0,  # no blank rows — we're only editing existing exercises
     widgets={

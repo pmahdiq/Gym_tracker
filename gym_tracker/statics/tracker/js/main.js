@@ -10,46 +10,42 @@ document.addEventListener("DOMContentLoaded", function () {
 ========================= */
 
 function initExerciseFormset() {
-
-    const addExerciseButton =
-        document.getElementById("add-exercise");
-
-    const exerciseList =
-        document.getElementById("exercise-list");
-
-    const totalFormsInput =
-        document.querySelector('input[name$="-TOTAL_FORMS"]');
-
+    const addExerciseButton = document.getElementById("add-exercise");
+    const exerciseList = document.getElementById("exercise-list");
+    const totalFormsInput = document.querySelector('input[name$="-TOTAL_FORMS"]');
 
     if (!addExerciseButton || !exerciseList || !totalFormsInput) {
-        // Not on the add/update program page — nothing to do here.
         return;
     }
 
-
     addExerciseButton.addEventListener("click", function () {
-
         const formIndex = parseInt(totalFormsInput.value, 10);
+        
+        // Dynamically extract the prefix (e.g., "exercise_set") from the total forms input name
+        const prefix = totalFormsInput.name.replace("-TOTAL_FORMS", "");
 
         const row = document.createElement("div");
-
         row.className = "exercise-row";
 
         row.innerHTML = `
-            <div class="form-group">
+            <!-- Hidden ID field required by Django's formset processor -->
+            <input 
+                type="hidden" 
+                name="${prefix}-${formIndex}-id" 
+                id="id_${prefix}-${formIndex}-id"
+            >
 
-                <label for="id_form-${formIndex}-title">
+            <div class="form-group">
+                <label for="id_${prefix}-${formIndex}-title">
                     Exercise
                 </label>
-
                 <input
                     type="text"
-                    name="form-${formIndex}-title"
-                    id="id_form-${formIndex}-title"
+                    name="${prefix}-${formIndex}-title"
+                    id="id_${prefix}-${formIndex}-title"
                     placeholder="Bench Press"
                     required
                 >
-
             </div>
 
             <button
@@ -63,70 +59,9 @@ function initExerciseFormset() {
 
         exerciseList.appendChild(row);
 
+        // Update the TOTAL_FORMS count
         totalFormsInput.value = formIndex + 1;
-
     });
-
-}
-
-
-/* =========================
-   SESSION TIMER
-   (only present on the start_session page)
-========================= */
-
-function initSessionTimer() {
-
-    const timer = document.getElementById("session-timer");
-    const timerButton = document.getElementById("timer-button");
-
-    if (!timer || !timerButton || !timer.dataset.startedAt) {
-        // Not on the start_session page — nothing to do here.
-        return;
-    }
-
-    const startedAt = new Date(timer.dataset.startedAt);
-
-    let running = true;
-    let pausedAccumulated = 0;   // milliseconds banked while paused
-    let pauseStartedAt = null;
-
-    function formatDuration(totalSeconds) {
-        const hours = Math.floor(totalSeconds / 3600);
-        const minutes = Math.floor((totalSeconds % 3600) / 60);
-        const seconds = totalSeconds % 60;
-
-        return [hours, minutes, seconds]
-            .map(function (n) { return String(n).padStart(2, "0"); })
-            .join(":");
-    }
-
-    function updateTimer() {
-        if (!running) {
-            return;
-        }
-
-        const elapsedMs = Date.now() - startedAt.getTime() - pausedAccumulated;
-        timer.textContent = formatDuration(Math.floor(elapsedMs / 1000));
-    }
-
-    setInterval(updateTimer, 1000);
-    updateTimer();
-
-    timerButton.addEventListener("click", function () {
-
-        running = !running;
-
-        if (!running) {
-            pauseStartedAt = Date.now();
-        } else if (pauseStartedAt) {
-            pausedAccumulated += Date.now() - pauseStartedAt;
-        }
-
-        timerButton.textContent = running ? "Pause" : "Resume";
-
-    });
-
 }
 
 

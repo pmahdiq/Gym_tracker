@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}{{ session.training_program.title }} Session | Gym Tracker{% endblock %}
+
+{% block content %}
+
+<div class="page-container">
+
+    <div class="page-header">
+        <div>
+            <p class="eyebrow">SESSION DETAILS</p>
+            <h1>{{ session.training_program.title }}</h1>
+            <p class="page-description">
+                {{ session.started_at|date:"M j, Y — H:i" }} → {{ session.completed_at|date:"H:i" }}
+            </p>
+        </div>
+    </div>
+
+    <div class="session-timer">
+        <p class="eyebrow">TOTAL TIME</p>
+        <div id="session-timer">{{ session.duration_display }}</div>
+    </div>
+
+    <div class="form-section">
+
+        <div class="form-section-header">
+            <div>
+                <h2>Exercises</h2>
+                <p>What was actually performed in this session.</p>
+            </div>
+        </div>
+
+        <div class="exercise-session-list">
+            {% for log in exercise_logs %}
+                <article class="exercise-session-card">
+
+                    <div class="exercise-session-header">
+                        <div class="session-icon">💪</div>
+                        <div><h3>{{ log.title }}</h3></div>
+                    </div>
+
+                    <div class="exercise-values">
+                        <div class="form-group">
+                            <label>Sets</label>
+                            <p class="stat-value small">{{ log.sets }}</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Reps</label>
+                            <p class="stat-value small">{{ log.reps }}</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Weight (kg)</label>
+                            <p class="stat-value small">{{ log.weight }}</p>
+                        </div>
+                    </div>
+
+                </article>
+            {% empty %}
+                <p class="empty-state">No exercises recorded for this session.</p>
+            {% endfor %}
+        </div>
+
+    </div>
+
+    <div class="form-actions">
+        <a href="{% url 'session_history' %}" class="secondary-button">Back to History</a>
+    </div>
+
+</div>
+
+{% endblock %}

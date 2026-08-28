@@ -15,10 +15,7 @@ class Training_Program(models.Model):
 class Exercise(models.Model):
     training_program = models.ForeignKey(Training_Program, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
-    reps = models.PositiveIntegerField(default=0)
-    sets = models.PositiveIntegerField(default=0)
-    weight = models.DecimalField(max_digits=5, decimal_places=1)
-
+    
     def __str__(self):
             return self.title
 class Training_Session(models.Model):
@@ -38,4 +35,15 @@ class Training_Session(models.Model):
 
 
     def __str__(self):
-            return self.title
+            return self.training_program.title
+
+class Training_Session_Exercise(models.Model):
+    training_session = models.ForeignKey(Training_Session, on_delete=models.CASCADE, related_name='exercise_logs')
+    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+    reps = models.PositiveIntegerField()
+    sets = models.PositiveIntegerField()
+    weight = models.DecimalField(max_digits=5, decimal_places=1)
+
+    def __str__(self):
+        return f"{self.title} — {self.training_session}"

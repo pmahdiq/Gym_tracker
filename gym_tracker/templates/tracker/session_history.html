@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}History | Gym Tracker{% endblock %}
+
+{% block content %}
+
+<div class="page-container">
+
+    <div class="page-header">
+        <div>
+            <p class="eyebrow">YOUR TRAINING</p>
+            <h1>Session History</h1>
+            <p class="page-description">
+                Every session you've completed, most recent first.
+            </p>
+        </div>
+    </div>
+
+    <div class="sessions-list">
+        {% for session in sessions %}
+            <article class="session-card">
+
+                <div class="session-info">
+                    <div class="session-icon">💪</div>
+                    <div>
+                        <h3>{{ session.training_program.title }}</h3>
+                        <p class="session-date">{{ session.completed_at|date:"M j, Y — H:i" }}</p>
+                    </div>
+                </div>
+
+                <div class="exercise-summary">
+                    <span>{{ session.duration_display }}</span>
+                </div>
+
+                <div class="program-actions">
+                    <a href="{% url 'session_detail' session.id %}" class="secondary-button">
+                        More Details
+                    </a>
+                </div>
+
+            </article>
+        {% empty %}
+            <p class="empty-state">No sessions completed yet.</p>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}

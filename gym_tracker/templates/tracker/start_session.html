@@ -14,12 +14,12 @@
         </div>
     </div>
 
-    <<div class="session-timer">
-    <p class="eyebrow">SESSION TIME</p>
-    <div id="session-timer" data-started-at="{{ session.started_at|date:'c' }}">
-        00:00:00
-    </div>
-    <button type="button" id="timer-button" class="secondary-button">Pause</button>
+    <div class="session-timer">
+        <p class="eyebrow">SESSION TIME</p>
+        <div id="session-timer" data-started-at="{{ session.started_at|date:'c' }}">
+            00:00:00
+        </div>
+        <button type="button" id="timer-button" class="secondary-button">Pause</button>
     </div>
 
     {% if messages %}
@@ -108,38 +108,4 @@
 
 </div>
 
-{% endblock %}
-
-
-{% block extra_js %}
-<script>
-    let seconds = 0;
-    let running = true;
-
-    const timer = document.getElementById("session-timer");
-    const timerButton = document.getElementById("timer-button");
-
-    function updateTimer() {
-        const hours = Math.floor(seconds / 3600);
-        const minutes = Math.floor((seconds % 3600) / 60);
-        const remainingSeconds = seconds % 60;
-
-        timer.textContent =
-            String(hours).padStart(2, "0") + ":" +
-            String(minutes).padStart(2, "0") + ":" +
-            String(remainingSeconds).padStart(2, "0");
-    }
-
-    const timerInterval = setInterval(function () {
-        if (running) {
-            seconds++;
-            updateTimer();
-        }
-    }, 1000);
-
-    timerButton.addEventListener("click", function () {
-        running = !running;
-        timerButton.textContent = running ? "Pause" : "Resume";
-    });
-</script>
 {% endblock %}
