@@ -29,3 +29,14 @@ Exercise_Form_Set = forms.inlineformset_factory(
         'title': forms.TextInput(attrs={'placeholder': 'Bench Press'}),
     },
 )
+
+Session_Form_Set = forms.modelformset_factory(
+    Exercise,
+    fields=['sets', 'reps', 'weight'],
+    extra=0,  # no blank rows — we're only editing existing exercises
+    widgets={
+        'sets': forms.NumberInput(attrs={'min': 1}),
+        'reps': forms.NumberInput(attrs={'min': 1}),
+        'weight': forms.NumberInput(attrs={'min': 0, 'step': 0.5}),
+    },
+)

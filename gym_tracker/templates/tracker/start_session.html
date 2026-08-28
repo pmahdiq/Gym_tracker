@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}{{ program.title }} | Gym Tracker{% endblock %}
+
+{% block content %}
+
+<div class="page-container">
+
+    <div class="page-header">
+        <div>
+            <p class="eyebrow">TRAINING SESSION</p>
+            <h1>{{ program.title }}</h1>
+            <p class="page-description">{{ program.description }}</p>
+        </div>
+    </div>
+
+    <<div class="session-timer">
+    <p class="eyebrow">SESSION TIME</p>
+    <div id="session-timer" data-started-at="{{ session.started_at|date:'c' }}">
+        00:00:00
+    </div>
+    <button type="button" id="timer-button" class="secondary-button">Pause</button>
+    </div>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="message message-{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form method="post" class="session-form">
+        {% csrf_token %}
+        {{ formset.management_form }}
+
+        <div class="form-section">
+            <div class="form-section-header">
+                <div>
+                    <h2>Exercises</h2>
+                    <p>Record what you actually performed during this session.</p>
+                </div>
+            </div>
+
+            <div class="exercise-session-list">
+
+                {% for ex_form in formset %}
+
+                <article class="exercise-session-card">
+
+                    {# hidden id field — tells Django which Exercise row this form updates #}
+                    {{ ex_form.id }}
+
+                    <div class="exercise-session-header">
+                        <div class="session-icon">💪</div>
+                        <div>
+                            <h3>{{ ex_form.instance.title }}</h3>
+                        </div>
+                    </div>
+
+                    <div class="exercise-values">
+
+                        <div class="form-group">
+                            <label for="{{ ex_form.sets.id_for_label }}">Sets</label>
+                            {{ ex_form.sets }}
+                            {% if ex_form.sets.errors %}
+                                <span class="field-error">{{ ex_form.sets.errors.0 }}</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ ex_form.reps.id_for_label }}">Reps</label>
+                            {{ ex_form.reps }}
+                            {% if ex_form.reps.errors %}
+                                <span class="field-error">{{ ex_form.reps.errors.0 }}</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ ex_form.weight.id_for_label }}">Weight (kg)</label>
+                            {{ ex_form.weight }}
+                            {% if ex_form.weight.errors %}
+                                <span class="field-error">{{ ex_form.weight.errors.0 }}</span>
+                            {% endif %}
+                        </div>
+
+                    </div>
+
+                </article>
+
+                {% empty %}
+
+                <p class="empty-state">
+                    This program doesn't have any exercises yet.
+                </p>
+
+                {% endfor %}
+
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <a href="{% url 'dashboard' %}" class="secondary-button">Cancel</a>
+            <button type="submit" class="primary-button">Finish Session</button>
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script>
+    let seconds = 0;
+    let running = true;
+
+    const timer = document.getElementById("session-timer");
+    const timerButton = document.getElementById("timer-button");
+
+    function updateTimer() {
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        const remainingSeconds = seconds % 60;
+
+        timer.textContent =
+            String(hours).padStart(2, "0") + ":" +
+            String(minutes).padStart(2, "0") + ":" +
+            String(remainingSeconds).padStart(2, "0");
+    }
+
+    const timerInterval = setInterval(function () {
+        if (running) {
+            seconds++;
+            updateTimer();
+        }
+    }, 1000);
+
+    timerButton.addEventListener("click", function () {
+        running = !running;
+        timerButton.textContent = running ? "Pause" : "Resume";
+    });
+</script>
+{% endblock %}

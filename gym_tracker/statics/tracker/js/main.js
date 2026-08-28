@@ -1,4 +1,15 @@
 document.addEventListener("DOMContentLoaded", function () {
+    initExerciseFormset();
+    initSessionTimer();
+});
+
+
+/* =========================
+   EXERCISE FORMSET
+   (only present on add/update program page)
+========================= */
+
+function initExerciseFormset() {
 
     const addExerciseButton =
         document.getElementById("add-exercise");
@@ -11,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     if (!addExerciseButton || !exerciseList || !totalFormsInput) {
-        console.error("Exercise formset elements not found.");
+        // Not on the add/update program page — nothing to do here.
         return;
     }
 
@@ -56,7 +67,67 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
-});
+}
+
+
+/* =========================
+   SESSION TIMER
+   (only present on the start_session page)
+========================= */
+
+function initSessionTimer() {
+
+    const timer = document.getElementById("session-timer");
+    const timerButton = document.getElementById("timer-button");
+
+    if (!timer || !timerButton || !timer.dataset.startedAt) {
+        // Not on the start_session page — nothing to do here.
+        return;
+    }
+
+    const startedAt = new Date(timer.dataset.startedAt);
+
+    let running = true;
+    let pausedAccumulated = 0;   // milliseconds banked while paused
+    let pauseStartedAt = null;
+
+    function formatDuration(totalSeconds) {
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+
+        return [hours, minutes, seconds]
+            .map(function (n) { return String(n).padStart(2, "0"); })
+            .join(":");
+    }
+
+    function updateTimer() {
+        if (!running) {
+            return;
+        }
+
+        const elapsedMs = Date.now() - startedAt.getTime() - pausedAccumulated;
+        timer.textContent = formatDuration(Math.floor(elapsedMs / 1000));
+    }
+
+    setInterval(updateTimer, 1000);
+    updateTimer();
+
+    timerButton.addEventListener("click", function () {
+
+        running = !running;
+
+        if (!running) {
+            pauseStartedAt = Date.now();
+        } else if (pauseStartedAt) {
+            pausedAccumulated += Date.now() - pauseStartedAt;
+        }
+
+        timerButton.textContent = running ? "Pause" : "Resume";
+
+    });
+
+}
 
 
 function removeExercise(button) {

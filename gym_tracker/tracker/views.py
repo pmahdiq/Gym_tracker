@@ -5,7 +5,7 @@ from django.db import transaction
 from django.contrib import messages
 
 from tracker.models import Training_Program, Training_Session
-from tracker.forms import Program_Model_Form, Exercise_Form_Set
+from tracker.forms import Program_Model_Form, Exercise_Form_Set, Session_Form_Set
 
 
 def home_page(request):
@@ -112,5 +112,36 @@ def delete_program(request, program_id):
 
 
 @login_required
+def start_session(request, program_id):
+    program = get_object_or_404(Training_Program, id=program_id)
+    queryset = program.exercise_set.all()
+
+    # Reuse an already-started, not-yet-finished session (e.g. user refreshed the page)
+    # instead of creating a new one every time they load this page.
+    session, _ = Training_Session.objects.get_or_create(
+        training_program=program,
+        completed_at__isnull=True,
+        defaults={'started_at': timezone.now()},
+    )
+
+    if request.method == 'POST':
+        formset = Session_Form_Set(request.POST, queryset=queryset)
+        if formset.is_valid():
+            formset.save()
+            session.completed_at = timezone.now()
+            session.save()
+            messages.success(request, f'"{program.title}" session saved.')
+            return redirect('dashboard')
+    else:
+        formset = Session_Form_Set(queryset=queryset)
+
+    return render(request, 'tracker/start_session.html', {
+        'program': program,
+        'formset': formset,
+        'session': session,
+    })
+
+
+@login_required
 def edit_profile(request):
-    return render(request, 'tracker/edit_profile.html')
+   pass
