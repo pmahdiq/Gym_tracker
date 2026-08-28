@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.db import transaction
 from django.contrib import messages
 
@@ -19,7 +19,7 @@ def dashboard_page(request):
         date_added__year=now.year,
         date_added__month=now.month
     ).count()
-    training_programs = Training_Program.objects.all()
+    training_programs = Training_Program.objects.all().filter(user=request.user)
     sessions_count = Training_Session.objects.all().count()
     last_session = Training_Session.objects.all().order_by('date_added').last()
     last_session_day = last_session.date_added if last_session else None
@@ -60,6 +60,18 @@ def add_program_page(request):
         'program_form': program_form,
         'exercise_form_set': exercise_form_set,
     })
+
+@login_required
+def delete_program(request, program_id):
+    # Only get program if it belongs to current user
+    program = get_object_or_404(Training_Program, id=program_id, user=request.user)
+    
+    if request.method == 'POST':
+        program.delete()
+        messages.success(request, f'Program "{program.title}" deleted!')
+        return redirect('dashboard')
+    
+    return redirect('dashboard')
 
 
 @login_required

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 
@@ -40,3 +41,9 @@ def register_page(request):
                 messages.error(request, 'Sign up failed')
             
     return render(request, 'accounts/register.html')
+
+@login_required
+def logout_view(request):
+    logout(request)
+    if not request.user.is_authenticated:
+        return redirect('home')    

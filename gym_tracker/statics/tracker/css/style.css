@@ -87,6 +87,39 @@ input {
     color: #e4e6eb;
 }
 
+.user-menu-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logout-form {
+    margin: 0;
+    padding: 0;
+}
+
+.logout-button {
+    padding: 8px 14px;
+
+    background: transparent;
+    color: #9298a8;
+
+    border: 1px solid #303544;
+    border-radius: 8px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.logout-button:hover {
+    background: #202430;
+    color: #e4e6eb;
+    border-color: #3b4152;
+}
+
 .user-avatar {
     width: 36px;
     height: 36px;
@@ -1192,4 +1225,42 @@ input {
         flex-direction: column;
     }
 
+}
+
+/* =========================
+   PROGRAM ACTIONS
+========================= */
+
+.program-actions {
+    margin-left: auto;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.program-actions .primary-button,
+.program-actions .secondary-button,
+.program-actions .delete-button {
+    width: auto;
+    min-width: 0;
+
+    padding: 9px 14px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    white-space: nowrap;
+}
+
+.program-actions .delete-form {
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    width: auto;
 }

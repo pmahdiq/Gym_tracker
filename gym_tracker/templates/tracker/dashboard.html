@@ -12,14 +12,14 @@
 
         <div>
             <p class="eyebrow">YOUR TRAINING</p>
-            <h1>Gym Sessions</h1>
+            <h1>Training Programs</h1>
             <p class="page-description">
                 Track your workouts and keep an eye on your progress.
             </p>
         </div>
 
         <a href="{% url 'add_program' %}" class="primary-button">
-            + Add Session
+            + Add Program
         </a>
 
     </div>
@@ -58,22 +58,41 @@
 
             {% for program in training_programs %}
 
-            <article class="session-card">
+        <article class="session-card">
 
-                <div class="session-info">
+            <div class="session-info">
 
-                    <div class="session-icon">
-                        💪
-                    </div>
-
-                    <div>
-                        <h3>{{program.title}}</h3>
-                    </div>
-
+                <div class="session-icon">
+                    💪
                 </div>
 
-                <form method="post" class="delete-form">
+                <div>
+                    <h3>{{ program.title }}</h3>
+                </div>
 
+            </div>
+
+            <div class="program-actions">
+
+                <a
+                    href=#
+                    class="secondary-button"
+                >
+                    Update
+                </a>
+
+                <a
+                    href=#
+                    class="primary-button"
+                >
+                    Start
+                </a>
+
+                <form
+                    method="post"
+                    class="delete-form"
+                    action="{% url 'delete_program' program.id %}"
+                >
                     {% csrf_token %}
 
                     <button
@@ -83,12 +102,13 @@
                     >
                         Delete
                     </button>
-
                 </form>
 
-            </article>
+            </div>
 
-            {% endfor %}
+        </article>
+
+        {% endfor %}
 
         </div>
 

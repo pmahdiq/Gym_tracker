@@ -16,24 +16,32 @@
     <header class="site-header">
         <div class="header-container">
 
-            <a href="{% url 'dashboard' %}" class="logo">
+            <a href="{% url 'home' %}" class="logo">
                 Gym<span>Tracker</span>
             </a>
 
             <nav class="main-nav">
                 <a href="{% url 'dashboard' %}">Dashboard</a>
-                <a href="{% url 'add_program' %}" class="nav-add">
-                    + Add Session
-                </a>
             </nav>
 
-            <a href="{% url 'edit_profile' %}" class="user-menu">
-                <div class="user-avatar">
-                    {{ user.username|first|upper }}
-                </div>
+            <div class="user-menu-group">
 
-                <span>{{ user.username }}</span>
-            </a>
+                <a href="{% url 'edit_profile' %}" class="user-menu">
+                    <div class="user-avatar">
+                        {{ user.username|first|upper }}
+                    </div>
+
+                    <span>{{ user.username }}</span>
+                </a>
+
+                <form method="post" action="{% url 'logout' %}" class="logout-form">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-button" title="Log out">
+                        Logout
+                    </button>
+                </form>
+
+            </div>
 
         </div>
     </header>
