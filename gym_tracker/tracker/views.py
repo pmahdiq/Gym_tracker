@@ -197,6 +197,16 @@ def session_detail(request, session_id):
     })
 
 
+def delete_session(request, session_id):
+    session = get_object_or_404(Training_Session, id=session_id, training_program__user=request.user)
+        
+    if request.method == 'POST':
+        session.delete()
+        messages.success(request, f'session "{session}" deleted!')
+        return redirect('session_history')
+    return redirect('session_history')
+
+
 @login_required
 def edit_profile(request):
    pass

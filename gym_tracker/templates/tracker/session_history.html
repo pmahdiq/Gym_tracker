@@ -36,6 +36,21 @@
                     <a href="{% url 'session_detail' session.id %}" class="secondary-button">
                         More Details
                     </a>
+                    <form
+                    method="post"
+                    class="delete-form"
+                    action="{% url 'delete_session' session.id %}"
+                >
+                    {% csrf_token %}
+
+                    <button
+                        type="button"
+                        class="delete-button"
+                        onclick="confirmDelete(this)"
+                    >
+                        Delete
+                    </button>
+                </form>
                 </div>
 
             </article>

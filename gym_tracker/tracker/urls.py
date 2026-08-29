@@ -12,5 +12,6 @@ urlpatterns = [
     path('start_session/<int:program_id>/', start_session, name='start_session'),
     path('session_history', session_history, name='session_history'),
     path('session_history/<int:session_id>/', session_detail, name='session_detail'),
+    path('delete_session/<int:session_id>', delete_session, name='delete_session'),
     path('edit_profile', edit_profile, name='edit_profile')
 ]
