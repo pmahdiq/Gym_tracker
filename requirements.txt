@@ -6,6 +6,7 @@ django-rename-app==0.1.7
 gunicorn==26.2.0
 h11==0.16.0
 psycopg==3.3.4
+mysqlclient==2.2.7
 sqlparse==0.6.0
 typing_extensions==4.16.0
 uvicorn==0.52.4

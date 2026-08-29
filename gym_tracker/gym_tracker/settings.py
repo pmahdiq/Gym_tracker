@@ -31,6 +31,8 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     os.environ.get("RENDER_EXTERNAL_HOSTNAME", ""),
+    os.environ.get("PYTHONANYWHERE_HOSTNAME", ""),
+    ".pythonanywhere.com",
 ]
 
 SITE_ID = 1
@@ -86,7 +88,8 @@ WSGI_APPLICATION = 'gym_tracker.wsgi.application'
 
 DATABASES = {
     "default": dj_database_url.config(
-        default=os.environ.get("DATABASE_URL")
+        default=os.environ.get("DATABASE_URL"),
+        conn_max_age=600,
     )
 }
 
@@ -142,9 +145,7 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_URL = 'media/'
-MEDIA_DIRS = [
-    BASE_DIR / "media"
-]
+MEDIA_ROOT = BASE_DIR / "media"
 
 
 
