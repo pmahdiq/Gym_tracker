@@ -1,0 +1,6 @@
+[build]
+buildCommand = "cd gym_tracker && python manage.py collectstatic --noinput"
+
+[deploy]
+releaseCommand = "cd gym_tracker && python manage.py migrate"
+startCommand = "cd gym_tracker && gunicorn gym_tracker.wsgi --bind 0.0.0.0:$PORT --log-file -"
