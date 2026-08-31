@@ -15,13 +15,20 @@ def home_page(request):
 @login_required
 def dashboard_page(request):
     now = timezone.now()
+    training_programs = Training_Program.objects.all().filter(user=request.user)
+
     this_month_sessions_count = Training_Session.objects.filter(
         date_added__year=now.year,
-        date_added__month=now.month
+        date_added__month=now.month,
+        training_program__user=request.user
     ).count()
-    training_programs = Training_Program.objects.all().filter(user=request.user)
-    sessions_count = Training_Session.objects.all().filter(training_program__user=request.user).count()
-    last_session = Training_Session.objects.all().filter(training_program=request.user).order_by('date_added').last()
+
+    sessions_count = Training_Session.objects.filter(training_program__user=request.user).count()
+
+    last_session = Training_Session.objects.filter(
+    training_program__user=request.user
+    ).order_by('-date_added').first()
+
     last_session_day = last_session.date_added if last_session else None
     
 
