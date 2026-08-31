@@ -20,8 +20,8 @@ def dashboard_page(request):
         date_added__month=now.month
     ).count()
     training_programs = Training_Program.objects.all().filter(user=request.user)
-    sessions_count = Training_Session.objects.all().filter(program__user=request.user).count()
-    last_session = Training_Session.objects.all().filter(program__user=request.user).order_by('date_added').last()
+    sessions_count = Training_Session.objects.all().filter(training_program__user=request.user).count()
+    last_session = Training_Session.objects.all().filter(training_program=request.user).order_by('date_added').last()
     last_session_day = last_session.date_added if last_session else None
     
 
