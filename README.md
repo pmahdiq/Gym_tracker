@@ -39,6 +39,7 @@ Clone the repository, create a virtual environment, install the dependencies fro
 ```bash
 python manage.py migrate
 python manage.py runserver
+```
 
 ## Demo
 
