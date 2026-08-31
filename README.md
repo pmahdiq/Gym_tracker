@@ -39,3 +39,8 @@ Clone the repository, create a virtual environment, install the dependencies fro
 ```bash
 python manage.py migrate
 python manage.py runserver
+
+## Demo
+
+[▶️ Watch the demo]([YOUR_GITHUB_VIDEO_URL](https://github.com/user-attachments/assets/da686b53-2057-4fc0-ab95-2e1d4ef51139))
+
