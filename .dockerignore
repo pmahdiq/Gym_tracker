@@ -1,0 +1,44 @@
+# Version Control
+.git
+.gitignore
+
+# Python Caches & Build Artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+.mypy_cache/
+
+# Local Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+
+# Local Databases (If using SQLite locally)
+*.sqlite3
+db.sqlite3
+
+# Django Media and Static Uploads 
+# (These should be managed via volumes or cloud storage, not baked into the image)
+media/
+staticfiles/
+
+# Environment Variables & Secrets
+.env
+.env.*
+secrets.json
+
+# Docker files (Optional, but prevents rebuilding if you change compose settings)
+docker-compose*.yml
+.dockerignore
+
+# OS & IDE specific files
+.DS_Store
+.idea/
+.vscode/
+*.swp
