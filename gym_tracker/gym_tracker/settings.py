@@ -31,8 +31,6 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     os.environ.get("RENDER_EXTERNAL_HOSTNAME", ""),
-    os.environ.get("PYTHONANYWHERE_HOSTNAME", ""),
-    ".pythonanywhere.com",
     os.environ.get("RAILWAY_PUBLIC_DOMAIN", ""),
     ".up.railway.app",
 ]

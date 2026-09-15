@@ -219,3 +219,6 @@ __marimo__/
 
 #vscode temps
 .vscode/
+
+#docker test compose
+docker-compose.override.yml
