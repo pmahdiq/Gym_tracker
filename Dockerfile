@@ -17,8 +17,6 @@ COPY . /app/
 
 WORKDIR /app/gym_tracker
 
-ENV SECRET_KEY=django-insecure-build-only-key
-
 RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
