@@ -15,7 +15,7 @@ RUN pip install -r requirements.txt
 
 COPY . /app/
 
-WORKDIR /app/gym_tracker
+WORKDIR /app/core
 
 RUN python manage.py collectstatic --noinput
 
